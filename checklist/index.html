@@ -1,0 +1,1213 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../policy/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>체크리스트 - 영화 시나리오 분석 플랫폼 - 설계 문서</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#checklist" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-header__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            영화 시나리오 분석 플랫폼 - 설계 문서
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              체크리스트
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-nav__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    영화 시나리오 분석 플랫폼 - 설계 문서
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 명세
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DB 스키마
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    외부 API 적재 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    체크리스트
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    체크리스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 설계 문서 완성도 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 설계 문서 완성도 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-architecturemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 아키텍처(architecture.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-api-apimd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 API 명세(api.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-db-dbmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 DB 스키마(db.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-policymd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 정책(policy.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 개발 환경 준비 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 개발 환경 준비 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 로컬 환경
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 GitHub 관리
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 백엔드 구현 체크 (예정/진행)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 백엔드 구현 체크 (예정/진행)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 인증/권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 영화 도메인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 분석 도메인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 통계 / 추천 기능 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 통계 / 추천 기능 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 통계
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 추천(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 추천 확장(선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 비동기/운영 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 비동기/운영 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 워커 / 큐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 캐시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 배포 전 체크
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 문서/포트폴리오 최종 점검
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 최종 목표 확인
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 설계 문서 완성도 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 설계 문서 완성도 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-architecturemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 아키텍처(architecture.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-api-apimd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 API 명세(api.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-db-dbmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 DB 스키마(db.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-policymd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 정책(policy.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 개발 환경 준비 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 개발 환경 준비 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 로컬 환경
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 GitHub 관리
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 백엔드 구현 체크 (예정/진행)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 백엔드 구현 체크 (예정/진행)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 인증/권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 영화 도메인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 분석 도메인
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 통계 / 추천 기능 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 통계 / 추천 기능 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 통계
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 추천(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 추천 확장(선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 비동기/운영 체크
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 비동기/운영 체크">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 워커 / 큐
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 캐시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 배포 전 체크
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 문서/포트폴리오 최종 점검
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 최종 목표 확인
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="checklist">체크리스트 (Checklist)<a class="headerlink" href="#checklist" title="Permanent link">&para;</a></h1>
+<p>본 문서는 <strong>영화 시나리오 분석 플랫폼(Recovie)</strong>의<br />
+설계 → 구현 → 배포 전 단계에서 확인해야 할 체크리스트를 정의합니다.</p>
+<p>이 문서는 다음 용도로 사용됩니다.
+- 설계 문서 완성도 점검
+- 개발 진행 상황 관리
+- 코드 리뷰 / 과제 제출 / 포트폴리오 검증</p>
+<hr />
+<h2 id="1">1. 설계 문서 완성도 체크<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<h3 id="11-architecturemd">1.1 아키텍처(architecture.md)<a class="headerlink" href="#11-architecturemd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 전체 시스템 구성(Frontend / API / DB / Cache / Worker / AI 추천) 설명됨</li>
+<li>[ ] Docker 기반 배포 구조 고려됨</li>
+<li>[ ] Mermaid 또는 다이어그램 이미지 포함됨</li>
+<li>[ ] 주요 데이터 흐름(조회/저장/추천) 설명됨</li>
+<li>[ ] 확장 로드맵(AI 추천 고도화) 명시됨</li>
+</ul>
+<hr />
+<h3 id="12-api-apimd">1.2 API 명세(api.md)<a class="headerlink" href="#12-api-apimd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Base URL 및 인증 방식(JWT) 명시</li>
+<li>[ ] 비로그인 가능 API와 로그인 필수 API 구분됨</li>
+<li>[ ] 영화 목록 조회 API</li>
+<li>[ ] 검색 파라미터 정의</li>
+<li>[ ] 페이징 처리 정의</li>
+<li>[ ] 영화 상세 조회 API 정의</li>
+<li>[ ] 분석 CRUD API 정의</li>
+<li>[ ] 통계 API (Top 분석 영화) 정의</li>
+<li>[ ] 추천 API (오늘의 추천 / 개인화) 정의</li>
+<li>[ ] 각 API별 상태 코드(200/201/401/403/404/500 등) 명시</li>
+<li>[ ] Request / Response JSON 예시 포함</li>
+</ul>
+<hr />
+<h3 id="13-db-dbmd">1.3 DB 스키마(db.md)<a class="headerlink" href="#13-db-dbmd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 핵심 테이블(users, movies, analyses) 정의됨</li>
+<li>[ ] 외부 영화 중복 기준(<code>external_movie_id UNIQUE</code>) 명시</li>
+<li>[ ] N:M 관계(movie_genres, analysis_tags) 정의됨</li>
+<li>[ ] 인덱스 전략(조회/페이징/통계) 명시</li>
+<li>[ ] 확장 테이블(통계/추천/이벤트) 고려됨</li>
+<li>[ ] soft delete / 시간 컬럼 정책 명시</li>
+</ul>
+<hr />
+<h3 id="14-policymd">1.4 정책(policy.md)<a class="headerlink" href="#14-policymd" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 외부 영화 API 적재 정책 정의</li>
+<li>[ ] 최초 적재 / 재적재 기준 명시</li>
+<li>[ ] UPSERT 전략 명시</li>
+<li>[ ] 캐시 / 레이트리밋 / 장애 대응 정책 포함</li>
+<li>[ ] 커밋 컨벤션 정의</li>
+<li>[ ] 브랜치 전략 정의</li>
+<li>[ ] 이슈 관리 규칙 정의</li>
+</ul>
+<hr />
+<h2 id="2">2. 개발 환경 준비 체크<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 로컬 환경<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Git 저장소 생성 및 초기화</li>
+<li>[ ] Docker / Docker Compose 설치</li>
+<li>[ ] 개발용 DB(PostgreSQL) 실행 가능</li>
+<li>[ ] Redis 실행 가능(캐시/큐)</li>
+<li>[ ] 환경 변수(.env) 관리 전략 정의</li>
+</ul>
+<hr />
+<h3 id="22-github">2.2 GitHub 관리<a class="headerlink" href="#22-github" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 문서 전용 레포 생성</li>
+<li>[ ] GitHub Pages 활성화</li>
+<li>[ ] MkDocs(Material) 정상 배포 확인</li>
+<li>[ ] 서비스 레포 README에 문서 링크 추가</li>
+</ul>
+<hr />
+<h2 id="3">3. 백엔드 구현 체크 (예정/진행)<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 인증/권한<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] JWT 기반 인증 구현</li>
+<li>[ ] 비로그인 사용자 조회 권한만 허용</li>
+<li>[ ] 로그인 사용자만 분석 저장 가능</li>
+<li>[ ] 관리자 권한 분리(선택)</li>
+</ul>
+<hr />
+<h3 id="32">3.2 영화 도메인<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 영화 목록 조회 구현</li>
+<li>[ ] 검색/정렬/페이징 정상 동작</li>
+<li>[ ] 영화 상세 조회 구현</li>
+<li>[ ] 외부 API 연동(Client 계층 분리)</li>
+<li>[ ] 외부 데이터 UPSERT 정상 동작</li>
+</ul>
+<hr />
+<h3 id="33">3.3 분석 도메인<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 분석 작성 기능 구현</li>
+<li>[ ] 분석 수정/삭제 권한 체크</li>
+<li>[ ] visibility(PUBLIC/PRIVATE/UNLISTED) 처리</li>
+<li>[ ] 태그 저장 및 조회 가능</li>
+<li>[ ] 내 분석 목록 조회 구현</li>
+</ul>
+<hr />
+<h2 id="4">4. 통계 / 추천 기능 체크<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 통계<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 유저별 Top 분석 영화 집계</li>
+<li>[ ] 영화별 분석 수 집계</li>
+<li>[ ] 일간 통계(movie_stats_daily) 설계 반영</li>
+</ul>
+<hr />
+<h3 id="42-mvp">4.2 추천(MVP)<a class="headerlink" href="#42-mvp" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 오늘의 추천(트렌딩 기반) 구현</li>
+<li>[ ] 비로그인/로그인 추천 전략 분리</li>
+<li>[ ] 추천 결과 캐싱 적용</li>
+<li>[ ] 추천 사유(reason) 제공</li>
+</ul>
+<hr />
+<h3 id="43">4.3 추천 확장(선택)<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 분석 텍스트 기반 임베딩 생성</li>
+<li>[ ] 벡터 검색 또는 유사 영화 추천</li>
+<li>[ ] 추천 로그 수집(노출/클릭/전환)</li>
+<li>[ ] 추천 품질 개선 로드맵 유지</li>
+</ul>
+<hr />
+<h2 id="5">5. 비동기/운영 체크<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 워커 / 큐<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 외부 API 적재 워커 분리</li>
+<li>[ ] 재시도 / 실패 로깅 처리</li>
+<li>[ ] 큐 적체 시 서비스 영향 최소화</li>
+</ul>
+<hr />
+<h3 id="52">5.2 캐시<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] 영화 목록 캐시 적용</li>
+<li>[ ] 영화 상세 캐시 적용</li>
+<li>[ ] 추천 API 캐시 적용</li>
+<li>[ ] 데이터 변경 시 캐시 무효화 전략 고려</li>
+</ul>
+<hr />
+<h2 id="6">6. 배포 전 체크<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] 환경 변수 하드코딩 제거</li>
+<li>[ ] 로그 레벨 분리(dev/prod)</li>
+<li>[ ] 민감 정보(GitHub, API Key) 미노출 확인</li>
+<li>[ ] Docker 이미지 빌드 성공</li>
+<li>[ ] 컨테이너 기동 순서 확인(DB → API → Worker)</li>
+</ul>
+<hr />
+<h2 id="7">7. 문서/포트폴리오 최종 점검<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] 설계 문서 링크 정상 접근</li>
+<li>[ ] 문서 내 다이어그램 깨짐 없음</li>
+<li>[ ] API/DB/정책 간 내용 불일치 없음</li>
+<li>[ ] README에 프로젝트 목적/링크 명확</li>
+<li>[ ] “설계 → 구현 → 확장” 스토리 설명 가능</li>
+</ul>
+<hr />
+<h2 id="8">8. 최종 목표 확인<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>이 프로젝트는 단순 CRUD 구현이 아니라<br />
+<strong>“도메인 설계 + 확장 가능한 아키텍처 + 협업 가능한 문서화”</strong>를 목표로 한다.</p>
+</blockquote>
+<ul>
+<li>[ ] 설계 의도를 말로 설명할 수 있다</li>
+<li>[ ] 왜 이런 구조를 선택했는지 설명할 수 있다</li>
+<li>[ ] 확장 시 변경 포인트를 알고 있다</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>

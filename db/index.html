@@ -1,0 +1,1893 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../api/">
+      
+      
+        <link rel="next" href="../policy/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>DB 스키마 - 영화 시나리오 분석 플랫폼 - 설계 문서</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#db" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-header__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            영화 시나리오 분석 플랫폼 - 설계 문서
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DB 스키마
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-nav__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    영화 시나리오 분석 플랫폼 - 설계 문서
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 명세
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DB 스키마
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DB 스키마
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-erd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ERD 개요(핵심 엔티티)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 핵심 테이블(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-movies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 movies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-genres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 genres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-movie_genres-nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 movie_genres (N:M)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-analyses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 analyses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-tags-analysis_tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 tags + analysis_tags (확장 대비 기본 추천)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 tags + analysis_tags (확장 대비 기본 추천)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis_tags-nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analysis_tags (N:M)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 확장 테이블(추천/통계/이벤트/검색)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-user_movie_stats-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 user_movie_stats (유저 Top 분석 영화 빠르게)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-movie_stats_daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 movie_stats_daily (오늘의 추천/트렌딩)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-recommendation_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 recommendation_logs (추천 품질 개선)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-movie_credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 movie_credits (선택: 감독/캐스트 정규화)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-event_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 event_logs (추천/통계 “실시간화”를 위한 이벤트 수집, 선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. AI/임베딩 확장(선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-movie_embeddings-pgvector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 movie_embeddings (pgvector 사용 시)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 제약조건(Constraints) 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 인덱스 전략 요약(필수/권장)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 인덱스 전략 요약(필수/권장)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        필수(초기 성능)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        성장 시 권장
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 데이터 유지/삭제 정책(선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 마이그레이션 전략(권장)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 구현 체크 포인트
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    외부 API 적재 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    체크리스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-erd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ERD 개요(핵심 엔티티)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 핵심 테이블(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-movies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 movies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-genres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 genres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-movie_genres-nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 movie_genres (N:M)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-analyses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 analyses
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26-tags-analysis_tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 tags + analysis_tags (확장 대비 기본 추천)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.6 tags + analysis_tags (확장 대비 기본 추천)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis_tags-nm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        analysis_tags (N:M)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 확장 테이블(추천/통계/이벤트/검색)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#31-user_movie_stats-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 user_movie_stats (유저 Top 분석 영화 빠르게)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32-movie_stats_daily" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 movie_stats_daily (오늘의 추천/트렌딩)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33-recommendation_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 recommendation_logs (추천 품질 개선)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-movie_credits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 movie_credits (선택: 감독/캐스트 정규화)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-event_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 event_logs (추천/통계 “실시간화”를 위한 이벤트 수집, 선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. AI/임베딩 확장(선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-movie_embeddings-pgvector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 movie_embeddings (pgvector 사용 시)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 제약조건(Constraints) 요약
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 인덱스 전략 요약(필수/권장)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 인덱스 전략 요약(필수/권장)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        필수(초기 성능)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        성장 시 권장
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 데이터 유지/삭제 정책(선택)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 마이그레이션 전략(권장)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 구현 체크 포인트
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="db">DB 스키마<a class="headerlink" href="#db" title="Permanent link">&para;</a></h1>
+<p>본 문서는 <strong>영화 시나리오 분석 기록 플랫폼(Recovie)</strong>의 DB 스키마를 정의합니다.<br />
+초기 MVP(영화 조회 + 분석 저장 + 기본 통계/추천)부터, 추후 확장(공개 피드/검색/추천 고도화/AI 임베딩/이벤트 기반)을 고려해 설계합니다.</p>
+<ul>
+<li>DB 권장: <strong>PostgreSQL</strong></li>
+<li>이유: JSON/FTS/인덱스 옵션/확장(pgvector) 등 확장성이 좋음</li>
+<li>표기 규칙:</li>
+<li>PK: <code>BIGSERIAL</code> 또는 <code>BIGINT</code></li>
+<li>시간: <code>TIMESTAMPTZ</code></li>
+<li>soft delete: <code>deleted_at</code> (선택)</li>
+<li>외부 영화 ID는 소스 포함 문자열로 통일 권장: <code>tmdb:550</code></li>
+</ul>
+<hr />
+<h2 id="1-erd">1. ERD 개요(핵심 엔티티)<a class="headerlink" href="#1-erd" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>erDiagram
+  USERS ||--o{ ANALYSES : writes
+  MOVIES ||--o{ ANALYSES : has
+  MOVIES ||--o{ MOVIE_GENRES : has
+  GENRES ||--o{ MOVIE_GENRES : maps
+  ANALYSES ||--o{ ANALYSIS_TAGS : has
+  TAGS ||--o{ ANALYSIS_TAGS : maps</code></pre>
+<hr />
+<h2 id="2-mvp">2. 핵심 테이블(MVP)<a class="headerlink" href="#2-mvp" title="Permanent link">&para;</a></h2>
+<h2 id="21-users">2.1 users<a class="headerlink" href="#21-users" title="Permanent link">&para;</a></h2>
+<p>로그인 사용자 정보</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>사용자 ID</td>
+</tr>
+<tr>
+<td>email</td>
+<td>VARCHAR(255)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>로그인 이메일</td>
+</tr>
+<tr>
+<td>password_hash</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>비밀번호 해시</td>
+</tr>
+<tr>
+<td>nickname</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>닉네임</td>
+</tr>
+<tr>
+<td>role</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL DEFAULT 'USER'</td>
+<td>USER/ADMIN</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>생성일</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>수정일</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>UNIQUE(email)</code></li>
+<li>(선택) <code>INDEX(nickname)</code></li>
+</ul>
+<hr />
+<h2 id="22-movies">2.2 movies<a class="headerlink" href="#22-movies" title="Permanent link">&para;</a></h2>
+<p>외부 영화 API로 적재된 영화 마스터</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>내부 영화 ID</td>
+</tr>
+<tr>
+<td>external_movie_id</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>예: <code>tmdb:550</code></td>
+</tr>
+<tr>
+<td>title</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>표기 제목</td>
+</tr>
+<tr>
+<td>original_title</td>
+<td>VARCHAR(255)</td>
+<td></td>
+<td>원제</td>
+</tr>
+<tr>
+<td>overview</td>
+<td>TEXT</td>
+<td></td>
+<td>줄거리</td>
+</tr>
+<tr>
+<td>release_date</td>
+<td>DATE</td>
+<td></td>
+<td>개봉일</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>INT</td>
+<td></td>
+<td>러닝타임(분)</td>
+</tr>
+<tr>
+<td>poster_url</td>
+<td>TEXT</td>
+<td></td>
+<td>포스터</td>
+</tr>
+<tr>
+<td>backdrop_url</td>
+<td>TEXT</td>
+<td></td>
+<td>배경 이미지</td>
+</tr>
+<tr>
+<td>popularity</td>
+<td>DOUBLE PRECISION</td>
+<td></td>
+<td>외부 API 지표</td>
+</tr>
+<tr>
+<td>vote_average</td>
+<td>DOUBLE PRECISION</td>
+<td></td>
+<td>평점</td>
+</tr>
+<tr>
+<td>vote_count</td>
+<td>INT</td>
+<td></td>
+<td>투표수</td>
+</tr>
+<tr>
+<td>last_synced_at</td>
+<td>TIMESTAMPTZ</td>
+<td></td>
+<td>마지막 동기화 시각</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>생성일</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>수정일</td>
+</tr>
+</tbody>
+</table>
+<p><strong>중복 기준(필수)</strong></p>
+<ul>
+<li><code>external_movie_id UNIQUE</code> ✅</li>
+</ul>
+<p><strong>인덱스 전략</strong></p>
+<ul>
+<li><code>INDEX(title)</code> (검색)</li>
+<li><code>INDEX(release_date)</code> (정렬/필터)</li>
+<li><code>INDEX(popularity)</code> (인기순)</li>
+<li>
+<p>(Postgres 권장) <strong>FTS(전문검색)</strong> 확장 시:</p>
+</li>
+<li>
+<p><code>GIN(to_tsvector('simple', title || ' ' || coalesce(overview,'')))</code></p>
+</li>
+</ul>
+<hr />
+<h2 id="23-genres">2.3 genres<a class="headerlink" href="#23-genres" title="Permanent link">&para;</a></h2>
+<p>장르 마스터(외부 API 기반)</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>장르 ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>Drama 등</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="24-movie_genres-nm">2.4 movie_genres (N:M)<a class="headerlink" href="#24-movie_genres-nm" title="Permanent link">&para;</a></h2>
+<p>영화-장르 매핑</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>genre_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>genres.id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>제약/인덱스</strong></p>
+<ul>
+<li><code>PRIMARY KEY(movie_id, genre_id)</code></li>
+<li><code>INDEX(genre_id, movie_id)</code> (장르별 영화 모음 빠르게)</li>
+</ul>
+<hr />
+<h2 id="25-analyses">2.5 analyses<a class="headerlink" href="#25-analyses" title="Permanent link">&para;</a></h2>
+<p>유저가 작성한 분석 기록(핵심)</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>분석 ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>BIGINT</td>
+<td>FK, NOT NULL</td>
+<td>users.id</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>FK, NOT NULL</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>title</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>분석 제목</td>
+</tr>
+<tr>
+<td>content</td>
+<td>TEXT</td>
+<td>NOT NULL</td>
+<td>분석 본문</td>
+</tr>
+<tr>
+<td>visibility</td>
+<td>VARCHAR(20)</td>
+<td>NOT NULL DEFAULT 'PRIVATE'</td>
+<td>PUBLIC/PRIVATE/UNLISTED</td>
+</tr>
+<tr>
+<td>rating</td>
+<td>SMALLINT</td>
+<td></td>
+<td>별점/선호(선택)</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>생성일</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>수정일</td>
+</tr>
+<tr>
+<td>deleted_at</td>
+<td>TIMESTAMPTZ</td>
+<td></td>
+<td>soft delete(선택)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스 전략(성능 핵심)</strong></p>
+<ul>
+<li><code>INDEX(user_id, updated_at DESC)</code> : 내 분석 목록</li>
+<li><code>INDEX(movie_id, updated_at DESC)</code> : 영화별 분석(공개 피드/통계)</li>
+<li><code>INDEX(visibility, updated_at DESC)</code> : 공개 분석 목록(확장 시)</li>
+<li>(선택) <code>GIN</code> FTS: <code>content</code> 검색이 필요할 때</li>
+</ul>
+<blockquote>
+<p>“유저가 같은 영화에 분석을 여러 개 작성”하는 게 자연스러우므로
+<code>UNIQUE(user_id, movie_id)</code>는 <strong>두지 않음</strong>(요구사항에 따라 변경 가능)</p>
+</blockquote>
+<hr />
+<h2 id="26-tags-analysis_tags">2.6 tags + analysis_tags (확장 대비 기본 추천)<a class="headerlink" href="#26-tags-analysis_tags" title="Permanent link">&para;</a></h2>
+<p>태그는 분석의 탐색/추천 품질에 크게 도움됨.</p>
+<h3 id="tags">tags<a class="headerlink" href="#tags" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>태그 ID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(50)</td>
+<td>UNIQUE, NOT NULL</td>
+<td>structure, character 등</td>
+</tr>
+</tbody>
+</table>
+<h3 id="analysis_tags-nm">analysis_tags (N:M)<a class="headerlink" href="#analysis_tags-nm" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>analysis_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>analyses.id</td>
+</tr>
+<tr>
+<td>tag_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>tags.id</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>PRIMARY KEY(analysis_id, tag_id)</code></li>
+<li><code>INDEX(tag_id, analysis_id)</code> : 태그별 분석 탐색</li>
+</ul>
+<hr />
+<h2 id="3">3. 확장 테이블(추천/통계/이벤트/검색)<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h2 id="31-user_movie_stats-top">3.1 user_movie_stats (유저 Top 분석 영화 빠르게)<a class="headerlink" href="#31-user_movie_stats-top" title="Permanent link">&para;</a></h2>
+<p>유저별 분석 횟수 집계(쿼리 부하 줄임)</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>users.id</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>analysis_count</td>
+<td>INT</td>
+<td>NOT NULL DEFAULT 0</td>
+<td>분석 횟수</td>
+</tr>
+<tr>
+<td>last_analyzed_at</td>
+<td>TIMESTAMPTZ</td>
+<td></td>
+<td>마지막 분석 시각</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>PRIMARY KEY(user_id, movie_id)</code></li>
+<li><code>INDEX(user_id, analysis_count DESC)</code> ✅ (Top N)</li>
+</ul>
+<blockquote>
+<p>집계 업데이트 방식</p>
+<ul>
+<li>동기(분석 저장 시 바로 증가) 또는</li>
+<li>비동기(이벤트/큐 처리) 둘 다 가능</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="32-movie_stats_daily">3.2 movie_stats_daily (오늘의 추천/트렌딩)<a class="headerlink" href="#32-movie_stats_daily" title="Permanent link">&para;</a></h2>
+<p>일 단위로 “분석/조회/점수”를 저장해 추천과 랭킹에 활용</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>DATE</td>
+<td>PK</td>
+<td>기준 날짜</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>analysis_count</td>
+<td>INT</td>
+<td>NOT NULL DEFAULT 0</td>
+<td>그날 분석 수</td>
+</tr>
+<tr>
+<td>view_count</td>
+<td>INT</td>
+<td>NOT NULL DEFAULT 0</td>
+<td>그날 조회 수(선택)</td>
+</tr>
+<tr>
+<td>trending_score</td>
+<td>DOUBLE PRECISION</td>
+<td>NOT NULL DEFAULT 0</td>
+<td>트렌딩 점수</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>갱신 시각</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>PRIMARY KEY(date, movie_id)</code></li>
+<li><code>INDEX(date, trending_score DESC)</code> ✅ (오늘 추천)</li>
+</ul>
+<hr />
+<h2 id="33-recommendation_logs">3.3 recommendation_logs (추천 품질 개선)<a class="headerlink" href="#33-recommendation_logs" title="Permanent link">&para;</a></h2>
+<p>추천 노출/클릭/분석작성 전환을 기록해 모델 개선에 사용</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>로그 ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>BIGINT</td>
+<td>FK</td>
+<td>비로그인 추천은 NULL 가능</td>
+</tr>
+<tr>
+<td>date</td>
+<td>DATE</td>
+<td>NOT NULL</td>
+<td>추천 날짜</td>
+</tr>
+<tr>
+<td>strategy</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>hybrid_trending 등</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>FK, NOT NULL</td>
+<td>추천된 영화</td>
+</tr>
+<tr>
+<td>score</td>
+<td>DOUBLE PRECISION</td>
+<td></td>
+<td>추천 점수</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>TEXT</td>
+<td></td>
+<td>추천 사유</td>
+</tr>
+<tr>
+<td>shown_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>노출 시각</td>
+</tr>
+<tr>
+<td>clicked_at</td>
+<td>TIMESTAMPTZ</td>
+<td></td>
+<td>클릭</td>
+</tr>
+<tr>
+<td>analyzed_at</td>
+<td>TIMESTAMPTZ</td>
+<td></td>
+<td>분석 작성(전환)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>INDEX(date)</code></li>
+<li><code>INDEX(user_id, date)</code></li>
+<li><code>INDEX(movie_id, date)</code></li>
+</ul>
+<hr />
+<h2 id="34-movie_credits">3.4 movie_credits (선택: 감독/캐스트 정규화)<a class="headerlink" href="#34-movie_credits" title="Permanent link">&para;</a></h2>
+<p>초기엔 <code>movies.credits JSON</code>로 저장해도 되지만, 확장(필터/검색) 시 분리 가능</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>인물 ID</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>FK, NOT NULL</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>person_name</td>
+<td>VARCHAR(255)</td>
+<td>NOT NULL</td>
+<td>이름</td>
+</tr>
+<tr>
+<td>role</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>DIRECTOR/CAST</td>
+</tr>
+<tr>
+<td>order_no</td>
+<td>INT</td>
+<td></td>
+<td>출연 순서(선택)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>INDEX(movie_id, role)</code></li>
+<li>(선택) <code>INDEX(person_name)</code></li>
+</ul>
+<hr />
+<h2 id="35-event_logs">3.5 event_logs (추천/통계 “실시간화”를 위한 이벤트 수집, 선택)<a class="headerlink" href="#35-event_logs" title="Permanent link">&para;</a></h2>
+<p>“조회/클릭/작성” 이벤트를 남겨 워커가 집계/추천 피처 업데이트</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>BIGSERIAL</td>
+<td>PK</td>
+<td>이벤트 ID</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>BIGINT</td>
+<td>FK</td>
+<td>NULL 가능</td>
+</tr>
+<tr>
+<td>event_type</td>
+<td>VARCHAR(30)</td>
+<td>NOT NULL</td>
+<td>MOVIE_VIEW/REC_CLICK/ANALYSIS_CREATE</td>
+</tr>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>FK</td>
+<td>관련 영화</td>
+</tr>
+<tr>
+<td>analysis_id</td>
+<td>BIGINT</td>
+<td>FK</td>
+<td>관련 분석</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>JSONB</td>
+<td></td>
+<td>추가 정보(UA 등)</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>생성일</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li><code>INDEX(event_type, created_at DESC)</code></li>
+<li><code>INDEX(movie_id, created_at DESC)</code></li>
+<li>(선택) 파티셔닝(월별) 고려 가능</li>
+</ul>
+<hr />
+<h2 id="4-ai">4. AI/임베딩 확장(선택)<a class="headerlink" href="#4-ai" title="Permanent link">&para;</a></h2>
+<h2 id="41-movie_embeddings-pgvector">4.1 movie_embeddings (pgvector 사용 시)<a class="headerlink" href="#41-movie_embeddings-pgvector" title="Permanent link">&para;</a></h2>
+<p>Postgres에 <code>pgvector</code> 확장 적용하면 벡터 검색 가능</p>
+<table>
+<thead>
+<tr>
+<th>컬럼</th>
+<th>타입</th>
+<th>제약</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>movie_id</td>
+<td>BIGINT</td>
+<td>PK(FK)</td>
+<td>movies.id</td>
+</tr>
+<tr>
+<td>model</td>
+<td>VARCHAR(50)</td>
+<td>NOT NULL</td>
+<td>임베딩 모델명</td>
+</tr>
+<tr>
+<td>embedding</td>
+<td>VECTOR</td>
+<td></td>
+<td>벡터</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMPTZ</td>
+<td>NOT NULL</td>
+<td>갱신</td>
+</tr>
+</tbody>
+</table>
+<p><strong>인덱스</strong></p>
+<ul>
+<li>벡터 인덱스(IVFFLAT/HNSW)는 pgvector 설정에 따라 추가</li>
+</ul>
+<blockquote>
+<p>벡터 DB를 따로(Qdrant) 쓰면 이 테이블 대신 외부 저장소 사용</p>
+</blockquote>
+<hr />
+<h2 id="5-constraints">5. 제약조건(Constraints) 요약<a class="headerlink" href="#5-constraints" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>movies.external_movie_id</code> <strong>UNIQUE</strong> (중복 기준 핵심)</li>
+<li><code>users.email</code> <strong>UNIQUE</strong></li>
+<li><code>movie_genres</code> / <code>analysis_tags</code>는 <strong>복합 PK로 중복 방지</strong></li>
+<li><code>analyses.visibility</code>는 ENUM처럼 값 제한(애플리케이션 레벨 + DB CHECK 권장)</li>
+</ul>
+<p>예: (Postgres CHECK)</p>
+<ul>
+<li><code>visibility in ('PUBLIC','PRIVATE','UNLISTED')</code></li>
+</ul>
+<hr />
+<h2 id="6">6. 인덱스 전략 요약(필수/권장)<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="_1">필수(초기 성능)<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>movies(external_movie_id UNIQUE)</code></li>
+<li><code>movies(title)</code>, <code>movies(release_date)</code></li>
+<li><code>analyses(user_id, updated_at DESC)</code></li>
+<li><code>analyses(movie_id, updated_at DESC)</code></li>
+<li><code>user_movie_stats(user_id, analysis_count DESC)</code></li>
+<li><code>movie_stats_daily(date, trending_score DESC)</code></li>
+</ul>
+<h3 id="_2">성장 시 권장<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>영화/분석 전문검색 FTS(GIN)</li>
+<li>이벤트 로그 파티셔닝</li>
+<li>벡터 검색 인덱스(pgvector) 또는 별도 Vector DB</li>
+</ul>
+<hr />
+<h2 id="7">7. 데이터 유지/삭제 정책(선택)<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>분석 삭제는 soft delete(<code>deleted_at</code>) 권장</p>
+</li>
+<li>
+<p>추천/통계 로그의 참조 일관성을 유지하기 쉬움</p>
+</li>
+<li>영화 데이터는 외부 API 기반이므로 삭제보다 “비활성화 플래그”가 안전(선택)</li>
+</ul>
+<hr />
+<h2 id="8">8. 마이그레이션 전략(권장)<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<ul>
+<li>스키마 변경은 Flyway/Liquibase로 관리 권장</li>
+<li>통계/이벤트/추천 테이블은 나중에 추가 가능하도록 모듈 분리</li>
+</ul>
+<hr />
+<h2 id="9">9. 구현 체크 포인트<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<ul>
+<li>외부 API 적재 시 <code>external_movie_id</code> 기준 <strong>UPSERT</strong> 필수</li>
+<li>
+<p>분석 저장 시 <code>user_movie_stats</code>/<code>movie_stats_daily</code> 업데이트는</p>
+</li>
+<li>
+<p>동기(간단) 또는</p>
+</li>
+<li>이벤트/큐 기반 비동기(확장성)로 설계 가능</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>

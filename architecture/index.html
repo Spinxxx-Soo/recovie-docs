@@ -1,0 +1,1538 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>아키텍처 - 영화 시나리오 분석 플랫폼 - 설계 문서</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-header__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            영화 시나리오 분석 플랫폼 - 설계 문서
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              아키텍처
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-nav__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    영화 시나리오 분석 플랫폼 - 설계 문서
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    아키텍처
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 요구사항 요약
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 요구사항 요약">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        핵심 기능
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        비기능 요구사항
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 전체 시스템 구성(논리 아키텍처)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 전체 시스템 구성(논리 아키텍처)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        구성 요소
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mermaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mermaid 아키텍처 다이어그램
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Docker 기준 실행 단위(서비스 분리)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Docker 기준 실행 단위(서비스 분리)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        최소 구성(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권장 구성(확장)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 백엔드 모듈/레이어 구조
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 백엔드 모듈/레이어 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 모듈(도메인) 구성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 레이어(책임) 정의
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 레이어(책임) 정의">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controller-presentation-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller (Presentation Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-application-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service (Application Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository-persistence-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository (Persistence Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-infrastructure-layer-external-api-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client (Infrastructure Layer: External API Client)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-async-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worker (Async Processing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-recommender-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Recommender Service (선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 주요 데이터 흐름(시나리오)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 주요 데이터 흐름(시나리오)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 비로그인 영화 목록/상세 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 로그인 사용자 분석 저장
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 외부 영화 API 적재/재적재(비동기 권장)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 오늘의 추천(하이브리드)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 추천(AI) 확장 로드맵
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 추천(AI) 확장 로드맵">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mvp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MVP (룰/통계 기반, 빠른 구현)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V1 (임베딩 기반 개인화)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V2 (온라인 랭킹)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v3-llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3 (LLM 보조 기능)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 운영/확장 고려사항
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 운영/확장 고려사항">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관측(Observability)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        보안/권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        성능
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 문서 링크(후속 문서)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 명세
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DB 스키마
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    외부 API 적재 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    체크리스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 요구사항 요약
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 요구사항 요약">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        핵심 기능
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        비기능 요구사항
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 전체 시스템 구성(논리 아키텍처)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 전체 시스템 구성(논리 아키텍처)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        구성 요소
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-mermaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Mermaid 아키텍처 다이어그램
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Docker 기준 실행 단위(서비스 분리)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Docker 기준 실행 단위(서비스 분리)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        최소 구성(MVP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        권장 구성(확장)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 백엔드 모듈/레이어 구조
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 백엔드 모듈/레이어 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 모듈(도메인) 구성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 레이어(책임) 정의
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 레이어(책임) 정의">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#controller-presentation-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller (Presentation Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-application-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service (Application Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository-persistence-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository (Persistence Layer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-infrastructure-layer-external-api-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client (Infrastructure Layer: External API Client)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#worker-async-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worker (Async Processing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ai-recommender-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Recommender Service (선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 주요 데이터 흐름(시나리오)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 주요 데이터 흐름(시나리오)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 비로그인 영화 목록/상세 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 로그인 사용자 분석 저장
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 외부 영화 API 적재/재적재(비동기 권장)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 오늘의 추천(하이브리드)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 추천(AI) 확장 로드맵
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 추천(AI) 확장 로드맵">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mvp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MVP (룰/통계 기반, 빠른 구현)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V1 (임베딩 기반 개인화)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V2 (온라인 랭킹)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v3-llm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V3 (LLM 보조 기능)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 운영/확장 고려사항
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 운영/확장 고려사항">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        관측(Observability)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        보안/권한
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        성능
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 문서 링크(후속 문서)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">아키텍처<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>이 문서는 <strong>영화 시나리오 분석 기록 플랫폼(Recovie)</strong>의 백엔드 아키텍처를 정의합니다.<br />
+목표는 “영화 API로 영화 정보를 가져오고(적재/동기화), 로그인 유저가 분석을 저장하며, 통계/추천(오늘의 추천·Top 분석 영화·카테고리 모음)을 제공”하는 흐름을 <strong>Docker 기반 배포</strong>까지 고려해 구조화하는 것입니다.</p>
+<hr />
+<h2 id="1">1. 요구사항 요약<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<h3 id="_2">핵심 기능<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>비로그인 사용자</strong></li>
+<li>영화 목록 조회(검색/페이징)</li>
+<li>영화 상세 조회</li>
+<li>(선택) 공개 분석글 열람(추가 기능)</li>
+<li><strong>로그인 사용자</strong></li>
+<li>특정 영화에 대한 <strong>시나리오 분석 작성/저장/수정/삭제</strong></li>
+<li>내 분석 모아보기(영화별/태그별/날짜별)</li>
+<li><strong>추천/발견(Discovery)</strong></li>
+<li>유저가 제일 많이 분석한 영화 Top N</li>
+<li>오늘의 분석 영화 추천(비로그인: 트렌딩 / 로그인: 개인화)</li>
+<li>카테고리별 영화 모음(장르/태그/테마)</li>
+</ul>
+<h3 id="_3">비기능 요구사항<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Docker Compose 기반 로컬 구동</strong></li>
+<li>배포 환경 확장(백엔드/워커/AI 추천 서비스 분리)</li>
+<li>외부 영화 API 적재 시 <strong>중복 처리(upsert)</strong> 및 <strong>업데이트 기준(last_synced_at 등)</strong> 필요</li>
+<li>추천은 MVP(룰/통계) → 임베딩 → 온라인 랭킹/LLM 보조로 확장 가능해야 함</li>
+</ul>
+<hr />
+<h2 id="2">2. 전체 시스템 구성(논리 아키텍처)<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="_4">구성 요소<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Frontend(정적 웹)</strong>: GitHub Pages 등(문서와 별개)</li>
+<li><strong>API Server</strong>: 영화/분석/통계/추천 API 제공</li>
+<li><strong>DB(PostgreSQL 권장)</strong>: 영화/분석/태그/통계 저장</li>
+<li><strong>Redis</strong>: 캐시(영화 목록/추천), 큐(비동기 작업), 레이트리밋(선택)</li>
+<li><strong>Worker</strong>: 영화 적재/재적재, 통계 집계, 추천 피처 업데이트</li>
+<li><strong>AI Recommender Service(선택, 분리 권장)</strong>: 개인화 추천/임베딩/랭킹</li>
+<li><strong>External Movie API</strong>: TMDB/OMDb 등 (영화 데이터 소스)</li>
+</ul>
+<hr />
+<h2 id="3-mermaid">3. Mermaid 아키텍처 다이어그램<a class="headerlink" href="#3-mermaid" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  U[User] --&gt; FE[Frontend]
+  FE --&gt;|REST/JSON| BE[API Server]
+
+  BE --&gt; DB[(PostgreSQL)]
+  BE --&gt; R[(Redis Cache)]
+  BE --&gt; MQ[(Queue: Redis Streams/RQ/Celery)]
+
+  BE --&gt; EXT[External Movie API Client]
+  EXT --&gt; API[TMDB/OMDb]
+
+  MQ --&gt; WK[Worker]
+  WK --&gt; DB
+  WK --&gt; R
+
+  BE --&gt; REC[AI Recommender Service]
+  REC --&gt; DB
+  REC --&gt; VDB[(Vector DB optional: pgvector/Qdrant)]</code></pre>
+<hr />
+<h2 id="4-docker">4. Docker 기준 실행 단위(서비스 분리)<a class="headerlink" href="#4-docker" title="Permanent link">&para;</a></h2>
+<h3 id="mvp">최소 구성(MVP)<a class="headerlink" href="#mvp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>api-server</code></li>
+<li><code>postgres</code></li>
+<li><code>redis</code></li>
+</ul>
+<h3 id="_5">권장 구성(확장)<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>api-server</code></li>
+<li><code>worker</code></li>
+<li><code>ai-recommender</code></li>
+<li><code>postgres</code></li>
+<li><code>redis</code></li>
+<li>(선택) <code>vector-db (qdrant)</code> 또는 <code>pgvector</code></li>
+<li>(선택) <code>opensearch</code>(영화 검색이 커지면)</li>
+</ul>
+<blockquote>
+<p>설계 포인트: 추천/적재/집계는 트래픽과 연산 성격이 달라서 <strong>워커/추천을 분리</strong>하면 운영이 편합니다.</p>
+</blockquote>
+<hr />
+<h2 id="5">5. 백엔드 모듈/레이어 구조<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 모듈(도메인) 구성<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>auth</code>: 회원가입/로그인/JWT</li>
+<li><code>movie</code>: 영화 조회/상세/검색 + 외부 API 적재/동기화</li>
+<li><code>analysis</code>: 분석 CRUD, 태그/카테고리 관리, 공개/비공개</li>
+<li><code>stats</code>: Top 분석 영화, 카테고리 모음, 일간 집계</li>
+<li><code>recommendation</code>: 오늘의 추천, 개인화 추천, 추천 로그</li>
+<li><code>admin</code>(선택): 초기 적재 트리거, 재동기화 트리거, 모니터링</li>
+</ul>
+<h3 id="52">5.2 레이어(책임) 정의<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<h4 id="controller-presentation-layer">Controller (Presentation Layer)<a class="headerlink" href="#controller-presentation-layer" title="Permanent link">&para;</a></h4>
+<ul>
+<li>HTTP 요청 라우팅, DTO validation</li>
+<li>인증/인가: “비로그인 조회 허용 / 저장은 로그인 필수”</li>
+<li>상태 코드 및 표준 응답 형태 유지</li>
+</ul>
+<h4 id="service-application-layer">Service (Application Layer)<a class="headerlink" href="#service-application-layer" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>핵심 비즈니스 로직</p>
+</li>
+<li>
+<p>분석 저장 규칙(권한/유효성)</p>
+</li>
+<li>영화 데이터 캐시 적용</li>
+<li>추천 요청 조합(트렌딩 + 개인화)</li>
+<li>트랜잭션 경계(쓰기/수정/삭제)</li>
+<li>워커 작업 발행(큐 enqueue)</li>
+</ul>
+<h4 id="repository-persistence-layer">Repository (Persistence Layer)<a class="headerlink" href="#repository-persistence-layer" title="Permanent link">&para;</a></h4>
+<ul>
+<li>DB 접근/쿼리 최적화</li>
+<li>목록 조회(검색/페이징), 통계 집계 쿼리, upsert 지원</li>
+</ul>
+<h4 id="client-infrastructure-layer-external-api-client">Client (Infrastructure Layer: External API Client)<a class="headerlink" href="#client-infrastructure-layer-external-api-client" title="Permanent link">&para;</a></h4>
+<ul>
+<li>외부 영화 API 호출(타임아웃/재시도/레이트리밋)</li>
+<li>응답 정규화 및 도메인 모델로 매핑</li>
+<li>ETag/캐시(가능 시), last_synced_at 업데이트 정책 반영</li>
+</ul>
+<h4 id="worker-async-processing">Worker (Async Processing)<a class="headerlink" href="#worker-async-processing" title="Permanent link">&para;</a></h4>
+<ul>
+<li>초기 적재/재적재(업데이트)</li>
+<li>일간 통계 집계(movie_stats_daily 등)</li>
+<li>추천 피처 업데이트(유저 선호 장르/태그, 임베딩 생성)</li>
+</ul>
+<h4 id="ai-recommender-service">AI Recommender Service (선택)<a class="headerlink" href="#ai-recommender-service" title="Permanent link">&para;</a></h4>
+<ul>
+<li>임베딩 생성/저장</li>
+<li>유사 영화 추천(벡터 검색)</li>
+<li>온라인 랭킹/하이브리드 추천</li>
+<li>추천 사유(reason) 생성(룰 기반 또는 LLM 보조)</li>
+</ul>
+<hr />
+<h2 id="6">6. 주요 데이터 흐름(시나리오)<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 비로그인 영화 목록/상세 조회<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<ol>
+<li>FE → BE: <code>GET /movies</code></li>
+<li>BE: Redis 캐시 확인(히트 시 즉시 반환)</li>
+<li>미스 시 DB 조회 → 캐시 저장 → 반환</li>
+</ol>
+<h3 id="62">6.2 로그인 사용자 분석 저장<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<ol>
+<li>FE → BE: <code>POST /movies/{id}/analyses</code> (JWT 필요)</li>
+<li>BE: 사용자 권한 확인 → Service에서 저장 → 분석/태그 연관 처리</li>
+<li>통계 업데이트(동기 또는 큐로 비동기)</li>
+<li>반환</li>
+</ol>
+<h3 id="63-api">6.3 외부 영화 API 적재/재적재(비동기 권장)<a class="headerlink" href="#63-api" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Admin/스케줄러 → BE: sync 트리거</li>
+<li>BE: 큐에 job 발행(예: <code>movie_sync_initial</code>)</li>
+<li>Worker: 외부 API 호출 → <code>external_movie_id</code> 기준 upsert → last_synced_at 업데이트</li>
+</ol>
+<h3 id="64">6.4 오늘의 추천(하이브리드)<a class="headerlink" href="#64" title="Permanent link">&para;</a></h3>
+<ul>
+<li>비로그인: 트렌딩 기반(최근 분석 증가 + 인기 + 다양성)</li>
+<li>로그인: 개인화(내 분석 텍스트/태그/장르) + 트렌딩 혼합</li>
+<li>추천 결과는 Redis에 캐시(짧은 TTL)</li>
+</ul>
+<hr />
+<h2 id="7-ai">7. 추천(AI) 확장 로드맵<a class="headerlink" href="#7-ai" title="Permanent link">&para;</a></h2>
+<h3 id="mvp_1">MVP (룰/통계 기반, 빠른 구현)<a class="headerlink" href="#mvp_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>오늘 추천 = 트렌딩(최근 분석 증가), 신규/인기 영화, 장르 다양성</li>
+<li>개인화 = 유저가 많이 분석한 장르/태그 기반 점수화</li>
+</ul>
+<h3 id="v1">V1 (임베딩 기반 개인화)<a class="headerlink" href="#v1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>입력: 영화 overview/keywords + 유저 분석 텍스트</li>
+<li>처리: 임베딩 생성 → 벡터 검색으로 유사 영화 추천</li>
+<li>저장: pgvector 또는 Qdrant</li>
+</ul>
+<h3 id="v2">V2 (온라인 랭킹)<a class="headerlink" href="#v2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>이벤트(조회/클릭/분석작성)를 피처로 활용</li>
+<li>LightGBM/XGBoost ranking 또는 간단한 bandit 적용</li>
+</ul>
+<h3 id="v3-llm">V3 (LLM 보조 기능)<a class="headerlink" href="#v3-llm" title="Permanent link">&para;</a></h3>
+<ul>
+<li>분석 자동 태깅/키워드 추출</li>
+<li>“이 영화 분석 포인트 추천(스토리 구조/캐릭터/테마)” 코파일럿</li>
+</ul>
+<hr />
+<h2 id="8">8. 운영/확장 고려사항<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<h3 id="observability">관측(Observability)<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>API 서버: 요청 로그, 에러 로그, latency</li>
+<li>워커: job 처리량, 실패 재시도, DLQ(선택)</li>
+<li>추천: 추천 노출/클릭/분석작성(전환) 로그</li>
+</ul>
+<h3 id="_6">보안/권한<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>JWT 기반 인증</li>
+<li>분석 접근 제어: PUBLIC/PRIVATE/UNLISTED</li>
+<li>관리자 API는 Role 기반 접근 제어</li>
+</ul>
+<h3 id="_7">성능<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>목록/추천 캐시(Redis)</li>
+<li>영화 검색이 커지면 OpenSearch 고려</li>
+<li>통계는 가능한 비동기 집계(일간/주간)</li>
+</ul>
+<hr />
+<h2 id="9">9. 문서 링크(후속 문서)<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../api/">API 명세</a></li>
+<li><a href="../db/">DB 스키마</a></li>
+<li><a href="../policy/">외부 API 적재 정책</a></li>
+<li><a href="../checklist/">체크리스트</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>

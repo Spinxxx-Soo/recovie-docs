@@ -1,0 +1,1629 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../db/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>API 명세 - 영화 시나리오 분석 플랫폼 - 설계 문서</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-header__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            영화 시나리오 분석 플랫폼 - 설계 문서
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API 명세
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="영화 시나리오 분석 플랫폼 - 설계 문서" class="md-nav__button md-logo" aria-label="영화 시나리오 분석 플랫폼 - 설계 문서" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    영화 시나리오 분석 플랫폼 - 설계 문서
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    개요
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    아키텍처
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 명세
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API 명세
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 공통 에러 응답 포맷
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Auth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Auth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 회원가입
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 로그인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 로그아웃(선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-movies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Movies (비로그인 조회 가능)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Movies (비로그인 조회 가능)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 영화 목록 조회 (검색/페이징)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 영화 상세 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 (선택) 영화 외부 API 동기화 트리거(관리자)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-analyses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Analyses (로그인 필요: 저장/수정/삭제)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Analyses (로그인 필요: 저장/수정/삭제)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 분석 작성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 내 분석 목록 조회 (페이징)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 분석 상세 조회 (본인 또는 공개만)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 분석 수정
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 분석 삭제
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stats-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stats / Discovery (비로그인 조회 가능)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stats / Discovery (비로그인 조회 가능)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Top 분석 영화 (플랫폼 전체)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 카테고리별 영화 모음
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Recommendation (오늘의 추천 / 개인화)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Recommendation (오늘의 추천 / 개인화)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 오늘의 분석 영화 추천 (비로그인/로그인 모두)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 개인화 추천 (로그인 필요)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. (추가 제안) 공개 분석 피드(커뮤니티 기능, 선택)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. (추가 제안) 공개 분석 피드(커뮤니티 기능, 선택)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 공개 분석 목록
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 상태 코드 정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../db/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DB 스키마
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    외부 API 적재 정책
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    체크리스트
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="목차">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      목차
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 공통 에러 응답 포맷
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Auth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Auth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 회원가입
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 로그인
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 로그아웃(선택)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-movies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Movies (비로그인 조회 가능)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Movies (비로그인 조회 가능)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 영화 목록 조회 (검색/페이징)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 영화 상세 조회
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 (선택) 영화 외부 API 동기화 트리거(관리자)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-analyses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Analyses (로그인 필요: 저장/수정/삭제)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Analyses (로그인 필요: 저장/수정/삭제)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 분석 작성
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 내 분석 목록 조회 (페이징)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 분석 상세 조회 (본인 또는 공개만)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 분석 수정
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 분석 삭제
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-stats-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stats / Discovery (비로그인 조회 가능)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stats / Discovery (비로그인 조회 가능)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-top" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Top 분석 영화 (플랫폼 전체)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 카테고리별 영화 모음
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Recommendation (오늘의 추천 / 개인화)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Recommendation (오늘의 추천 / 개인화)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 오늘의 분석 영화 추천 (비로그인/로그인 모두)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 개인화 추천 (로그인 필요)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. (추가 제안) 공개 분석 피드(커뮤니티 기능, 선택)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. (추가 제안) 공개 분석 피드(커뮤니티 기능, 선택)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 공개 분석 목록
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 상태 코드 정리
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="api">API 명세<a class="headerlink" href="#api" title="Permanent link">&para;</a></h1>
+<p>본 문서는 <strong>영화 시나리오 분석 기록 플랫폼(Recovie)</strong>의 API 엔드포인트와 스펙을 정의합니다.</p>
+<ul>
+<li>Base URL: <code>/api/v1</code></li>
+<li>인증: Bearer JWT (<code>Authorization: Bearer &lt;accessToken&gt;</code>)</li>
+<li>공통 응답 규칙:</li>
+<li>성공: 2xx + JSON</li>
+<li>실패: 4xx/5xx + 에러 JSON</li>
+</ul>
+<hr />
+<h2 id="1">1. 공통 에러 응답 포맷<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:00:00+09:00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/api/v1/movies&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bad Request&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;query 파라미터 형식이 올바르지 않습니다.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;requestId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;req_2f3c...&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>status</code>: HTTP 상태코드</li>
+<li><code>message</code>: 사용자/개발자 확인용 메시지</li>
+<li><code>requestId</code>: 로그 추적용(선택)</li>
+</ul>
+<hr />
+<h2 id="2-auth">2. Auth<a class="headerlink" href="#2-auth" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 회원가입<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>POST /auth/signup</code></li>
+<li><strong>Auth</strong>: 없음</li>
+<li><strong>Request</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user@recovie.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P@ssw0rd!&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;nickname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;밍&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Response (201)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;userId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user@recovie.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;nickname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;밍&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:10:00+09:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>201</code>, <code>400</code>, <code>409</code></li>
+</ul>
+<hr />
+<h3 id="22">2.2 로그인<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>POST /auth/login</code></li>
+<li><strong>Auth</strong>: 없음</li>
+<li><strong>Request</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user@recovie.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;P@ssw0rd!&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Response (200)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;accessToken&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jwt_access_token&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;refreshToken&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jwt_refresh_token&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expiresIn&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>401</code>, <code>400</code></li>
+</ul>
+<hr />
+<h3 id="23">2.3 로그아웃(선택)<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>POST /auth/logout</code></li>
+<li><strong>Auth</strong>: 필요</li>
+<li><strong>Request</strong>: 없음</li>
+<li><strong>Response (204)</strong>: Body 없음</li>
+<li><strong>Status Codes</strong>: <code>204</code>, <code>401</code></li>
+</ul>
+<hr />
+<h2 id="3-movies">3. Movies (비로그인 조회 가능)<a class="headerlink" href="#3-movies" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 영화 목록 조회 (검색/페이징)<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /movies</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 없음</p>
+</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>query</code> (string, optional): 제목 검색</p>
+</li>
+<li><code>genre</code> (string, optional): 장르 필터(예: <code>Drama</code>)</li>
+<li><code>sort</code> (string, optional): <code>popular | recent | release_date | analysis_count</code></li>
+<li><code>page</code> (int, optional, default=1)</li>
+<li>
+<p><code>size</code> (int, optional, default=20, max=50)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1842</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;externalMovieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmdb:550&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;releaseDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1999-10-15&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;posterUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://...&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;genres&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Drama&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;analysisCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="32">3.2 영화 상세 조회<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /movies/{movieId}</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 없음</p>
+</li>
+<li>
+<p><strong>Path Params</strong></p>
+</li>
+<li>
+<p><code>movieId</code> (int, required)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;externalMovieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmdb:550&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;originalTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;overview&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;....&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;runtime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">139</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;releaseDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1999-10-15&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;posterUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;backdropUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;genres&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Drama&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;credits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;director&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;David Fincher&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Brad Pitt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Edward Norton&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;stats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;analysisCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;topTags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;theme&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;structure&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;lastSyncedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T02:00:00+09:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>404</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="33-api">3.3 (선택) 영화 외부 API 동기화 트리거(관리자)<a class="headerlink" href="#33-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>POST /admin/movies/sync</code></li>
+<li><strong>Auth</strong>: 필요(관리자 권한)</li>
+<li><strong>Request</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TMDB&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INITIAL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;pages&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>mode</code>: <code>INITIAL | UPDATE</code></li>
+<li><strong>Response (202)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;jobId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sync_20260210_001&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QUEUED&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>202</code>, <code>401</code>, <code>403</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h2 id="4-analyses">4. Analyses (로그인 필요: 저장/수정/삭제)<a class="headerlink" href="#4-analyses" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 분석 작성<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>POST /movies/{movieId}/analyses</code></li>
+<li><strong>Auth</strong>: 필요</li>
+<li><strong>Request</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1막 전환점 분석&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;주인공의 결핍이 ...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PRIVATE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;rating&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>visibility</code>: <code>PUBLIC | PRIVATE | UNLISTED</code></li>
+<li><strong>Response (201)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;analysisId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9001</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;userId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1막 전환점 분석&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PRIVATE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:20:00+09:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>201</code>, <code>400</code>, <code>401</code>, <code>404</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="42">4.2 내 분석 목록 조회 (페이징)<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /me/analyses</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 필요</p>
+</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>movieId</code> (int, optional)</p>
+</li>
+<li><code>visibility</code> (string, optional): <code>PUBLIC|PRIVATE|UNLISTED</code></li>
+<li><code>page</code> (int, optional, default=1)</li>
+<li>
+<p><code>size</code> (int, optional, default=20)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;analysisId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9001</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;movieTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1막 전환점 분석&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PRIVATE&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:22:00+09:00&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>401</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="43">4.3 분석 상세 조회 (본인 또는 공개만)<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /analyses/{analysisId}</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 선택(비로그인은 PUBLIC만 가능)</p>
+</li>
+<li>
+<p><strong>Path Params</strong></p>
+</li>
+<li>
+<p><code>analysisId</code> (int)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;analysisId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9001</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;movieTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;userId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;nickname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;밍&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1막 전환점 분석&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;....&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PRIVATE&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;character&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;rating&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:20:00+09:00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:22:00+09:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>
+<p><strong>Status Codes</strong>:</p>
+</li>
+<li>
+<p><code>200</code></p>
+</li>
+<li><code>401</code> (비로그인/토큰없음인데 PRIVATE 접근)</li>
+<li><code>403</code> (로그인했지만 소유자 아님 + PRIVATE)</li>
+<li><code>404</code></li>
+<li><code>500</code></li>
+</ul>
+<hr />
+<h3 id="44">4.4 분석 수정<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>PUT /analyses/{analysisId}</code></li>
+<li><strong>Auth</strong>: 필요</li>
+<li><strong>Request</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;수정된 제목&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;수정된 내용...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UNLISTED&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;theme&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;structure&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;rating&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Response (200)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;analysisId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9001</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10T12:30:00+09:00&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>400</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="45">4.5 분석 삭제<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>DELETE /analyses/{analysisId}</code></li>
+<li><strong>Auth</strong>: 필요</li>
+<li><strong>Response (204)</strong>: Body 없음</li>
+<li><strong>Status Codes</strong>: <code>204</code>, <code>401</code>, <code>403</code>, <code>404</code>, <code>500</code></li>
+</ul>
+<hr />
+<h2 id="5-stats-discovery">5. Stats / Discovery (비로그인 조회 가능)<a class="headerlink" href="#5-stats-discovery" title="Permanent link">&para;</a></h2>
+<h3 id="51-top">5.1 Top 분석 영화 (플랫폼 전체)<a class="headerlink" href="#51-top" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /stats/top-analyzed-movies</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 없음</p>
+</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>limit</code> (int, optional, default=10, max=50)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;analysisCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="52">5.2 카테고리별 영화 모음<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /collections</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 없음</p>
+</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>type</code> (string, required): <code>genre | tag | theme</code></p>
+</li>
+<li><code>key</code> (string, required): 예) <code>Drama</code>, <code>structure</code></li>
+<li><code>page</code> (int, optional, default=1)</li>
+<li>
+<p><code>size</code> (int, optional, default=20)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;genre&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Drama&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fight Club&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;releaseDate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1999-10-15&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;posterUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://...&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;analysisCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h2 id="6-recommendation">6. Recommendation (오늘의 추천 / 개인화)<a class="headerlink" href="#6-recommendation" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 오늘의 분석 영화 추천 (비로그인/로그인 모두)<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>GET /recommendations/today</code></li>
+<li><strong>Auth</strong>: 선택</li>
+<li><strong>Response (200)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-02-10&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hybrid_trending_personalized&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">501</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Interstellar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;당신이 자주 분석한 테마(시간/구조)와 유사&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.87</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>500</code></li>
+</ul>
+<hr />
+<h3 id="62">6.2 개인화 추천 (로그인 필요)<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>URL</strong>: <code>GET /recommendations/me</code></p>
+</li>
+<li>
+<p><strong>Auth</strong>: 필요</p>
+</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>limit</code> (int, optional, default=20, max=50)</p>
+</li>
+<li>
+<p><strong>Response (200)</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;embedding_hybrid&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;movieId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">777</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Dark Knight&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;분석한 키워드(갈등/윤리)와 유사&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.81</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>401</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h2 id="7">7. (추가 제안) 공개 분석 피드(커뮤니티 기능, 선택)<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>추후 확장 시 “PUBLIC 분석 공유/검색”이 플랫폼 매력 포인트가 됩니다.</p>
+</blockquote>
+<h3 id="71">7.1 공개 분석 목록<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>URL</strong>: <code>GET /analyses/public</code></li>
+<li><strong>Auth</strong>: 없음</li>
+<li>
+<p><strong>Query Params</strong></p>
+</li>
+<li>
+<p><code>query</code> (string, optional): 제목/내용 검색</p>
+</li>
+<li><code>movieId</code> (int, optional)</li>
+<li><code>tag</code> (string, optional)</li>
+<li><code>page</code>, <code>size</code></li>
+<li><strong>Status Codes</strong>: <code>200</code>, <code>400</code>, <code>500</code></li>
+</ul>
+<hr />
+<h2 id="8">8. 상태 코드 정리<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>200 OK</code>: 조회/수정 성공</li>
+<li><code>201 Created</code>: 생성 성공</li>
+<li><code>202 Accepted</code>: 비동기 작업 큐 등록 성공(동기화 트리거)</li>
+<li><code>204 No Content</code>: 삭제/로그아웃 성공</li>
+<li><code>400 Bad Request</code>: 파라미터/바디 검증 실패</li>
+<li><code>401 Unauthorized</code>: 인증 필요/토큰 만료</li>
+<li><code>403 Forbidden</code>: 권한 없음(소유자 아님/관리자 아님)</li>
+<li><code>404 Not Found</code>: 리소스 없음</li>
+<li><code>409 Conflict</code>: 중복(회원가입 이메일 등)</li>
+<li><code>500 Internal Server Error</code>: 서버 오류</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+        <script src="../javascripts/mermaid.js"></script>
+      
+    
+  </body>
+</html>
