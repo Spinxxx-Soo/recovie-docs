@@ -11,3 +11,4 @@ __pycache__/
 
 # 환경 변수
 .env
+.github/workflows/deploy.yml
