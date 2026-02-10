@@ -1,0 +1,27 @@
+site_name: 영화 시나리오 분석 플랫폼 - 설계 문서
+theme:
+  name: material
+  language: ko
+
+nav:
+  - 개요: index.md
+  - 아키텍처: architecture.md
+  - API 명세: api.md
+  - DB 스키마: db.md
+  - 외부 API 적재 정책: policy.md
+  - 체크리스트: checklist.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+  - pymdownx.details
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid.js
